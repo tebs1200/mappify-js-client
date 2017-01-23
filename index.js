@@ -41,12 +41,12 @@ module.exports = () => {
 
 
         // Set API Token
-        if(configObject.token) {
-            if(typeof configObject.token === "string") {
-                newConfig.token = configObject.token;
-                logger.trace(`Mappify API Token is ${newConfig.token}`);
+        if(configObject.apiKey) {
+            if(typeof configObject.apiKey === "string") {
+                newConfig.apiKey = configObject.apiKey;
+                logger.trace(`Mappify API key is ${newConfig.apiKey}`);
             } else {
-                logger.warn("Only strings are supported for API Tokens. Token not set.");
+                logger.warn("Only strings are supported for API key. Key not set.");
             }
         }
 
@@ -74,11 +74,26 @@ module.exports = () => {
     // Autocomplete
     module.autocomplete = (addressSearchString, done) => {
 
-        const AUTOCOMPLETE_PATH = "address/autocomplete/";
+        const AUTOCOMPLETE_PATH = MAPPIFY_BASE_URL + "address/autocomplete/";
 
+        let postBody = {
+            streetAddress: addressSearchString,
+            boostPrefix: config.autocompleteBoostPrefix,
+            apiKey: config.apiKey
+        };
 
+        request
+            .post(AUTOCOMPLETE_PATH)
+            .send(postBody)
+            .end((err, res) => {
+                if(err) {
+                    logger.error(`Unable to retrieve Mappify autocomplete suggestions for '${addressSearchString}'`);
+                    logger.error(err.message);
+                    return done(err);
+                }
 
-        done(new Error("Not Implemented"));
+                done(null, res.body);
+            });
     };
 
 
