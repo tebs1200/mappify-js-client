@@ -11,5 +11,8 @@
     "geocoding"
   ],
   "author": "Aaren Tebbutt",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "superagent": "^3.3.2"
+  }
 }
