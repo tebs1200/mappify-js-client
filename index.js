@@ -5,7 +5,7 @@ const log4js = require('log4js');
 
 const MAPPIFY_BASE_URL = "https://mappify.io/api/rpc/";
 
-module.exports = function() {
+module.exports = () => {
 
     let module = {};
 
@@ -18,8 +18,13 @@ module.exports = function() {
     let logger = log4js.getLogger();
     logger.setLevel(config.setLevel);
 
+    // Configure
+    module.configure = (configObject) => {
+        logger.error('Not Implemented');
+    };
+
     // Autocomplete
-    module.autocomplete = function(addressSearchString, done) {
+    module.autocomplete = (addressSearchString, done) => {
 
         const AUTOCOMPLETE_PATH = "address/autocomplete/";
 
@@ -28,7 +33,7 @@ module.exports = function() {
 
 
     // Classify Coordinates
-    module.classifyCoordinates = function(encoding, lat, long, radius, done) {
+    module.classifyCoordinates = (encoding, lat, long, radius, done) => {
 
         const CLASSIFY_PATH = "coordinates/classify/";
 
@@ -37,7 +42,7 @@ module.exports = function() {
 
 
     // Geocode
-    module.geocode = function(streetAddress, postCode, suburb, state, done) {
+    module.geocode = (streetAddress, postCode, suburb, state, done) => {
 
         const GEOCODE_PATH = "address/geocode/";
 
@@ -46,11 +51,13 @@ module.exports = function() {
 
 
     // Reverse Geocode
-    module.reverseGeocode = function(lat, long, radius, done) {
+    module.reverseGeocode = (lat, long, radius, done) => {
 
         const AUTOCOMPLETE_PATH = "coordinates/reversegeocode/";
 
         done(new Error("Not Implemented"));
     };
 
+
+    return module;
 };
