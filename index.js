@@ -12,6 +12,7 @@ module.exports = () => {
     // Default Config values
     let config = {
         logLevel: 'OFF',
+        autocompleteBoostPrefix: true
     };
 
     let logger = log4js.getLogger();
@@ -22,20 +23,20 @@ module.exports = () => {
 
         let newConfig = {};
 
-        
+
         // Set Log level
         if(configObject.logLevel) {
             if(["ALL", "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "OFF"].includes(configObject.logLevel)) {
                 newConfig.logLevel = configObject.logLevel;
+                logger.setLevel(newConfig.logLevel);
             } else {
                 logger.warn("Unrecognised Log Level. Log level won't be changed.");
-                newConfig.logLevel = configObject.logLevel;
+                newConfig.logLevel = config.logLevel;
             }
         } else {
             logger.trace("No log level provided with config. Log level won't be changed.");
-            newConfig.logLevel = configObject.logLevel;
+            newConfig.logLevel = config.logLevel;
         }
-        logger.setLevel(newConfig.logLevel);
         logger.trace(`Mappify Log level is ${newConfig.logLevel}`);
 
 
@@ -43,13 +44,30 @@ module.exports = () => {
         if(configObject.token) {
             if(typeof configObject.token === "string") {
                 newConfig.token = configObject.token;
-                logger.trace(`Mappify API Token level is ${newConfig.token}`);
+                logger.trace(`Mappify API Token is ${newConfig.token}`);
             } else {
                 logger.warn("Only strings are supported for API Tokens. Token not set.");
             }
         }
 
+
+        // Set Autocomplete Boost Prefix behaviour
+        if(configObject.hasOwnProperty("autocompleteBoostPrefix")) {
+            if(typeof configObject.autocompleteBoostPrefix === "boolean") {
+                newConfig.autocompleteBoostPrefix = configObject.autocompleteBoostPrefix;
+            } else {
+                logger.warning("Mappify autocompleteBoostPrefix must be a boolean value. BoostPrefix behaviour won't be changed");
+                newConfig.autocompleteBoostPrefix = config.autocompleteBoostPrefix;
+            }
+        } else {
+            logger.trace("No Mappify autocompleteBoostPrefix value provided. BoostPrefix behaviour won't be changed");
+            newConfig.autocompleteBoostPrefix = config.autocompleteBoostPrefix;
+        }
+        logger.trace(`Mappify Autocomplete BoostPrefix is ${newConfig.autocompleteBoostPrefix ? "enabled" : "disabled" }`);
+
+
         config = newConfig;
+
     };
 
 
@@ -57,6 +75,8 @@ module.exports = () => {
     module.autocomplete = (addressSearchString, done) => {
 
         const AUTOCOMPLETE_PATH = "address/autocomplete/";
+
+
 
         done(new Error("Not Implemented"));
     };
