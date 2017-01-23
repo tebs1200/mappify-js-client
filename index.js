@@ -18,7 +18,7 @@ module.exports = () => {
 
     // Default Configuration
     let config = {
-        logLevel: 'OFF',
+        logLevel: "OFF",
         autocompleteBoostPrefix: true
     };
 
@@ -80,6 +80,10 @@ module.exports = () => {
     // Autocomplete
     module.autocomplete = (addressSearchString, done) => {
 
+        if(typeof addressSearchString !== "string") {
+            done(new TypeError("Parameter 'addressSearchString' wasn't a string value"));
+        }
+
         let postBody = {
             streetAddress: addressSearchString,
             boostPrefix: config.autocompleteBoostPrefix,
@@ -96,6 +100,7 @@ module.exports = () => {
                     return done(err);
                 }
 
+                logger.trace(`Mappify returned ${res.body.result.length} autocomplete matches for '${addressSearchString}'`);
                 done(null, res.body);
             });
     };
