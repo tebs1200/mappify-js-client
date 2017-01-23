@@ -14,7 +14,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tebs1200/node-mapify.git"
+    "url": "https://github.com/tebs1200/node-mappify.git"
   },
   "dependencies": {
     "log4js": "^1.1.0",
