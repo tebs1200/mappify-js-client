@@ -1,5 +1,5 @@
 {
-  "name": "node-mappify",
+  "name": "mappify",
   "version": "0.1.1",
   "description": "Node.js client library for Mappify.io",
   "main": "index.js",
@@ -13,10 +13,11 @@
   "author": "Aaren Tebbutt",
   "license": "MIT",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/tebs1200/node-mapify.git"
+    "type": "git",
+    "url": "https://github.com/tebs1200/node-mapify.git"
   },
   "dependencies": {
+    "log4js": "^1.1.0",
     "superagent": "^3.3.2"
   }
 }
