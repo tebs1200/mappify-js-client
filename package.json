@@ -12,6 +12,10 @@
   ],
   "author": "Aaren Tebbutt",
   "license": "MIT",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/tebs1200/node-mapify.git"
+  },
   "dependencies": {
     "superagent": "^3.3.2"
   }
