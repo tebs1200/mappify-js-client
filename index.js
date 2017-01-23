@@ -1,15 +1,22 @@
 "use strict";
 
+// Dependencies
 const request = require('superagent');
 const log4js = require('log4js');
 
+// URLs
 const MAPPIFY_BASE_URL = "https://mappify.io/api/rpc/";
+const AUTOCOMPLETE_URL = MAPPIFY_BASE_URL + "address/autocomplete/";
+const CLASSIFY_URL = MAPPIFY_BASE_URL + "coordinates/classify/";
+const GEOCODE_URL = MAPPIFY_BASE_URL + "address/geocode/";
+const REVERSE_GEOCODE_URL = MAPPIFY_BASE_URL + "coordinates/reversegeocode/";
+
 
 module.exports = () => {
 
     let module = {};
 
-    // Default Config values
+    // Default Configuration
     let config = {
         logLevel: 'OFF',
         autocompleteBoostPrefix: true
@@ -22,7 +29,6 @@ module.exports = () => {
     module.configure = (configObject) => {
 
         let newConfig = {};
-
 
         // Set Log level
         if(configObject.logLevel) {
@@ -74,8 +80,6 @@ module.exports = () => {
     // Autocomplete
     module.autocomplete = (addressSearchString, done) => {
 
-        const AUTOCOMPLETE_PATH = MAPPIFY_BASE_URL + "address/autocomplete/";
-
         let postBody = {
             streetAddress: addressSearchString,
             boostPrefix: config.autocompleteBoostPrefix,
@@ -83,7 +87,7 @@ module.exports = () => {
         };
 
         request
-            .post(AUTOCOMPLETE_PATH)
+            .post(AUTOCOMPLETE_URL)
             .send(postBody)
             .end((err, res) => {
                 if(err) {
@@ -100,7 +104,6 @@ module.exports = () => {
     // Classify Coordinates
     module.classifyCoordinates = (encoding, lat, long, radius, done) => {
 
-        const CLASSIFY_PATH = "coordinates/classify/";
 
         done(new Error("Not Implemented"));
     };
@@ -109,7 +112,6 @@ module.exports = () => {
     // Geocode
     module.geocode = (streetAddress, postCode, suburb, state, done) => {
 
-        const GEOCODE_PATH = "address/geocode/";
 
         done(new Error("Not Implemented"));
     };
@@ -118,7 +120,6 @@ module.exports = () => {
     // Reverse Geocode
     module.reverseGeocode = (lat, long, radius, done) => {
 
-        const REVERSE_GEOCODE_PATH = "coordinates/reversegeocode/";
 
         done(new Error("Not Implemented"));
     };
