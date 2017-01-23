@@ -11,17 +11,47 @@ module.exports = () => {
 
     // Default Config values
     let config = {
-        logLevel: 'ERROR',
-        token: null
+        logLevel: 'OFF',
     };
 
     let logger = log4js.getLogger();
-    logger.setLevel(config.setLevel);
+    logger.setLevel(config.logLevel);
 
     // Configure
     module.configure = (configObject) => {
-        logger.error('Not Implemented');
+
+        let newConfig = {};
+
+        
+        // Set Log level
+        if(configObject.logLevel) {
+            if(["ALL", "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "OFF"].includes(configObject.logLevel)) {
+                newConfig.logLevel = configObject.logLevel;
+            } else {
+                logger.warn("Unrecognised Log Level. Log level won't be changed.");
+                newConfig.logLevel = configObject.logLevel;
+            }
+        } else {
+            logger.trace("No log level provided with config. Log level won't be changed.");
+            newConfig.logLevel = configObject.logLevel;
+        }
+        logger.setLevel(newConfig.logLevel);
+        logger.trace(`Mappify Log level is ${newConfig.logLevel}`);
+
+
+        // Set API Token
+        if(configObject.token) {
+            if(typeof configObject.token === "string") {
+                newConfig.token = configObject.token;
+                logger.trace(`Mappify API Token level is ${newConfig.token}`);
+            } else {
+                logger.warn("Only strings are supported for API Tokens. Token not set.");
+            }
+        }
+
+        config = newConfig;
     };
+
 
     // Autocomplete
     module.autocomplete = (addressSearchString, done) => {
@@ -53,7 +83,7 @@ module.exports = () => {
     // Reverse Geocode
     module.reverseGeocode = (lat, long, radius, done) => {
 
-        const AUTOCOMPLETE_PATH = "coordinates/reversegeocode/";
+        const REVERSE_GEOCODE_PATH = "coordinates/reversegeocode/";
 
         done(new Error("Not Implemented"));
     };
