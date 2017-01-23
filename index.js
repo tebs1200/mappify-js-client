@@ -110,8 +110,44 @@ module.exports = () => {
     // Classify Coordinates
     module.classifyCoordinates = (encoding, lat, long, radius, done) => {
 
+        if(!["LGA", "POA", "SA1", "SA2", "SA3", "SA4"].includes(encoding)) {
+            logger.error(`Invalid encodig value '${encoding}'`);
+            done(new Error("Invalid encoding value"));
+        }
+        if((typeof lat !== "number") || (lat < -90 || lat > 90)) {
+            logger.error(`Invalid lat value '${lat}'. Numeric value between -90 and 90 expected.`);
+            done(new Error("Invalid lat value"));
+        }
+        if((typeof long !== "number") || (long < 0 || long > 180)) {
+            logger.error(`Invalid long value '${lat}'. Numeric value between 0 and 180 expected.`);
+            done(new Error("Invalid long value"));
+        }
+        if((typeof radius !== "number") || radius < 0) {
+            logger.error(`Invalid radius value '${lat}'. Positive numeric value expected.`);
+            done(new Error("Invalid radius value"));
+        }
 
-        done(new Error("Not Implemented"));
+        let postBody = {
+            encoding: encoding,
+            lat: lat,
+            long: long,
+            radius: radius,
+            apiKey: config.apiKey
+        };
+
+        request
+            .post(CLASSIFY_URL)
+            .send(postBody)
+            .end((err, res) => {
+                if(err) {
+                    logger.error("Unable to retrieve Mappify area classification for coordinates");
+                    logger.error(err.message);
+                    return done(err);
+                }
+
+                logger.trace("Mappify returned an area classification");
+                done(null, res.body);
+            });
     };
 
 
@@ -122,21 +158,21 @@ module.exports = () => {
             logger.error("Parameter 'streetAddress' wasn't a string value");
             done(new TypeError("Parameter 'streetAddress' wasn't a string value"));
         }
-        if(postcode && typeof postCode !== "string") {
+        if(postcode && (typeof postCode !== "string")) {
             logger.error("Parameter 'postCode' wasn't a string value");
             done(new TypeError("Parameter 'postCode' wasn't a string value"));
         }
-        if(suburb && typeof suburb !== "string") {
+        if(suburb && (typeof suburb !== "string")) {
             logger.error("Parameter 'suburb' wasn't a string value");
             done(new TypeError("Parameter 'suburb' wasn't a string value"));
         }
-        if(state && typeof state !== "string") {
+        if(state && (typeof state !== "string")) {
             logger.error("Parameter 'state' wasn't a string value");
             done(new TypeError("Parameter 'state' wasn't a string value"));
         }
         if(state && !["ACT", "NSW", "VIC", "QLD", "TAS", "SA", "WA", "NT"].includes(state)) {
             logger.error(`Invalid state value '${state}'`);
-            done(new TypeError("Invalid state value"));
+            done(new Error("Invalid state value"));
         }
 
         let postBody = {
