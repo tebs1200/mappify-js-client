@@ -81,6 +81,7 @@ module.exports = () => {
     module.autocomplete = (addressSearchString, done) => {
 
         if(typeof addressSearchString !== "string") {
+            logger.error("Parameter 'addressSearchString' wasn't a string value");
             done(new TypeError("Parameter 'addressSearchString' wasn't a string value"));
         }
 
@@ -117,8 +118,48 @@ module.exports = () => {
     // Geocode
     module.geocode = (streetAddress, postCode, suburb, state, done) => {
 
+        if(typeof streetAddress !== "string") {
+            logger.error("Parameter 'streetAddress' wasn't a string value");
+            done(new TypeError("Parameter 'streetAddress' wasn't a string value"));
+        }
+        if(postcode && typeof postCode !== "string") {
+            logger.error("Parameter 'postCode' wasn't a string value");
+            done(new TypeError("Parameter 'postCode' wasn't a string value"));
+        }
+        if(suburb && typeof suburb !== "string") {
+            logger.error("Parameter 'suburb' wasn't a string value");
+            done(new TypeError("Parameter 'suburb' wasn't a string value"));
+        }
+        if(state && typeof state !== "string") {
+            logger.error("Parameter 'state' wasn't a string value");
+            done(new TypeError("Parameter 'state' wasn't a string value"));
+        }
+        if(state && !["ACT", "NSW", "VIC", "QLD", "TAS", "SA", "WA", "NT"].includes(state)) {
+            logger.error(`Invalid state value '${state}'`);
+            done(new TypeError("Invalid state value"));
+        }
 
-        done(new Error("Not Implemented"));
+        let postBody = {
+            streetAddress: streetAddress,
+            postCode: postCode,
+            suburb: suburb,
+            state: state,
+            apiKey: config.apiKey
+        };
+
+        request
+            .post(GEOCODE_URL)
+            .send(postBody)
+            .end((err, res) => {
+                if(err) {
+                    logger.error("Unable to retrieve Mappify geocode location");
+                    logger.error(err.message);
+                    return done(err);
+                }
+
+                logger.trace("Mappify returned a street address record.");
+                done(null, res.body);
+            });
     };
 
 
