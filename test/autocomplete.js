@@ -1,9 +1,7 @@
 "use strict";
 
-const Mappify = require("../index.js");
+const mappify = require("../index.js").getClient();
 const expect = require("chai").expect;
-
-const mappify = Mappify.getClient();
 
 describe("autocomplete", () => {
 
