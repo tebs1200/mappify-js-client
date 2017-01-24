@@ -4,7 +4,7 @@
   "description": "Node.js client library for Mappify.io",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [
     "mappify",
@@ -19,5 +19,9 @@
   "dependencies": {
     "log4js": "^1.1.0",
     "superagent": "^3.3.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
   }
 }
