@@ -81,8 +81,8 @@ module.exports = (function() {
     mappify.autocomplete = function(addressSearchString, done) {
 
         if(typeof addressSearchString !== "string") {
-            logger.error("Parameter 'addressSearchString' wasn't a string value");
-            done(new TypeError("Parameter 'addressSearchString' wasn't a string value"));
+            logger.error("Value provided to autocomplete wasn't a string");
+            return done(new TypeError("Provided search value wasn't a string"));
         }
 
         let postBody = {
