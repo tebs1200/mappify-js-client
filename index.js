@@ -56,23 +56,35 @@ module.exports.getClient = function(apiKey) {
     // Classify Coordinates
     mappify.classifyCoordinates = function(encoding, lat, long, radius, done) {
 
-        if(!["LGA", "POA", "SA1", "SA2", "SA3", "SA4"].includes(encoding)) {
+        if(!encoding || !["LGA", "POA", "SA1", "SA2", "SA3", "SA4"].includes(encoding)) {
             return done(new Error("Invalid encoding value"));
         }
-        if((typeof lat !== "number") || (lat < -90 || lat > 90)) {
-            return done(new Error("Invalid lat value"));
+
+        if(typeof lat !== "number") {
+            return done(new Error("Invalid latitude value"));
         }
-        if((typeof long !== "number") || (long < 0 || long > 180)) {
-            return done(new Error("Invalid long value"));
+        if(lat < -90 || lat > 90) {
+            return done(new Error("Latitude is out of range"));
         }
-        if((typeof radius !== "number") || radius < 0) {
+
+        if(typeof long !== "number") {
+            return done(new Error("Invalid longitude value"));
+        }
+        if(long < -180 || long > 180) {
+            return done(new Error("Longitude is out of range"));
+        }
+
+        if(radius !== null && (typeof radius !== "number")) {
             return done(new Error("Invalid radius value"));
+        }
+        if((typeof radius === "number") && radius < 0) {
+            return done(new Error("Radius is out of range"));
         }
 
         let postBody = {
             encoding: encoding,
             lat: lat,
-            long: long,
+            lon: long,
             radius: radius,
             apiKey: config.apiKey
         };
