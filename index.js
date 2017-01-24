@@ -11,35 +11,17 @@ const GEOCODE_URL = MAPPIFY_BASE_URL + "address/geocode/";
 const REVERSE_GEOCODE_URL = MAPPIFY_BASE_URL + "coordinates/reversegeocode/";
 
 
-module.exports = (function() {
+module.exports.getClient = function(apiKey) {
 
     let mappify = {};
 
-    // Default Configuration
+    // Initial Configuration
     let config = {
         autocompleteBoostPrefix: true
     };
-
-    // Configure
-    mappify.configure = function(configObject) {
-
-        let newConfig = {};
-
-        // Set API Token
-        if(configObject.apiKey && typeof configObject.apiKey === "string") {
-            newConfig.apiKey = configObject.apiKey;
-        }
-
-        // Set Autocomplete Boost Prefix behaviour
-        if(typeof configObject.autocompleteBoostPrefix === "boolean") {
-            newConfig.autocompleteBoostPrefix = configObject.autocompleteBoostPrefix;
-        } else {
-            newConfig.autocompleteBoostPrefix = config.autocompleteBoostPrefix;
-        }
-
-        config = newConfig;
-
-    };
+    if(apiKey && typeof apiKey === "string") {
+        config.apiKey = apiKey;
+    }
 
 
     // Autocomplete
@@ -153,4 +135,4 @@ module.exports = (function() {
 
 
     return mappify;
-})();
+};
