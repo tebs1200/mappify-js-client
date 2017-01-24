@@ -30,6 +30,9 @@ module.exports.getClient = function(apiKey) {
         if(typeof addressSearchString !== "string") {
             return done(new TypeError("Provided search value wasn't a string"));
         }
+        if(addressSearchString === "") {
+            return done(new TypeError("Provided search string was empty"));
+        }
 
         let postBody = {
             streetAddress: addressSearchString,
@@ -42,7 +45,6 @@ module.exports.getClient = function(apiKey) {
             .send(postBody)
             .end((err, res) => {
                 if(err) {
-                    logger.error(err.message);
                     return done(err);
                 }
 

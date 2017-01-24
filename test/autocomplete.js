@@ -3,9 +3,7 @@
 const Mappify = require("../index.js");
 const expect = require("chai").expect;
 
-
 const mappify = Mappify.getClient();
-
 
 describe("autocomplete", () => {
 
@@ -17,6 +15,14 @@ describe("autocomplete", () => {
         mappify.autocomplete({}, (err) => {
             expect(err).to.exist;
             expect(err.message).to.equal("Provided search value wasn't a string");
+            done();
+        });
+    });
+
+    it("should return with error if the first argument is an empty string", (done) => {
+        mappify.autocomplete("", (err, res) => {
+            expect(err).to.exist;
+            expect(err.message).to.equal("Provided search string was empty");
             done();
         });
     });
