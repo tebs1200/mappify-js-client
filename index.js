@@ -12,9 +12,9 @@ const GEOCODE_URL = MAPPIFY_BASE_URL + "address/geocode/";
 const REVERSE_GEOCODE_URL = MAPPIFY_BASE_URL + "coordinates/reversegeocode/";
 
 
-module.exports = () => {
+module.exports = (function() {
 
-    let module = {};
+    let mappify = {};
 
     // Default Configuration
     let config = {
@@ -26,7 +26,7 @@ module.exports = () => {
     logger.setLevel(config.logLevel);
 
     // Configure
-    module.configure = (configObject) => {
+    mappify.configure = function(configObject) {
 
         let newConfig = {};
 
@@ -78,7 +78,7 @@ module.exports = () => {
 
 
     // Autocomplete
-    module.autocomplete = (addressSearchString, done) => {
+    mappify.autocomplete = function(addressSearchString, done) {
 
         if(typeof addressSearchString !== "string") {
             logger.error("Parameter 'addressSearchString' wasn't a string value");
@@ -108,7 +108,7 @@ module.exports = () => {
 
 
     // Classify Coordinates
-    module.classifyCoordinates = (encoding, lat, long, radius, done) => {
+    mappify.classifyCoordinates = function(encoding, lat, long, radius, done) {
 
         if(!["LGA", "POA", "SA1", "SA2", "SA3", "SA4"].includes(encoding)) {
             logger.error(`Invalid encodig value '${encoding}'`);
@@ -152,7 +152,7 @@ module.exports = () => {
 
 
     // Geocode
-    module.geocode = (streetAddress, postCode, suburb, state, done) => {
+    mappify.geocode = function(streetAddress, postCode, suburb, state, done) {
 
         if(typeof streetAddress !== "string") {
             logger.error("Parameter 'streetAddress' wasn't a string value");
@@ -200,12 +200,12 @@ module.exports = () => {
 
 
     // Reverse Geocode
-    module.reverseGeocode = (lat, long, radius, done) => {
+    mappify.reverseGeocode = function(lat, long, radius, done) {
 
 
         done(new Error("Not Implemented"));
     };
 
 
-    return module;
-};
+    return mappify;
+})();
