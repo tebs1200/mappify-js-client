@@ -12,7 +12,7 @@ describe("drivingDirections", () => {
     it("should return with error if the first argument isn't a point object", (done) => {
         mappify.drivingDirections("wrong", {lat: -12.4668, lon: 130.8426}, null, (err) => {
             expect(err).to.exist;
-            expect(err.message).to.equal("Origin isn't a valid point object");
+            expect(err.message).to.equal("Origin isn't a valid point. Not a valid object.");
             done();
         });
     });
@@ -20,7 +20,7 @@ describe("drivingDirections", () => {
     it("should return with error if the second argument isn't a point object", (done) => {
         mappify.drivingDirections({lat: -12.4317, lon: 130.8449}, {invalid: "object"}, null, (err) => {
             expect(err).to.exist;
-            expect(err.message).to.equal("Destination isn't a valid point object");
+            expect(err.message).to.equal("Destination isn't a valid point. 'lat' is missing.");
             done();
         });
     });
@@ -28,7 +28,7 @@ describe("drivingDirections", () => {
     it("should return with error if a point's latitude is out of range", (done) => {
         mappify.drivingDirections({lat: -120.4317, lon: 130.8449}, {lat: -12.4668, lon: 130.8426}, null, (err) => {
             expect(err).to.exist;
-            expect(err.message).to.equal("Origin isn't a valid coordinate. Latitude is out of range");
+            expect(err.message).to.equal("Origin isn't a valid point. Latitude is out of range.");
             done();
         });
     });
@@ -36,7 +36,7 @@ describe("drivingDirections", () => {
     it("should return with error if a point's longitude is out of range", (done) => {
         mappify.drivingDirections({lat: -12.4317, lon: 230.8449}, {lat: -12.4668, lon: 130.8426}, null, (err) => {
             expect(err).to.exist;
-            expect(err.message).to.equal("Origin isn't a valid coordinate. Longitude is out of range");
+            expect(err.message).to.equal("Origin isn't a valid point. Longitude is out of range.");
             done();
         });
     });

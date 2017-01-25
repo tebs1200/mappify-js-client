@@ -188,5 +188,71 @@ module.exports.getClient = function(apiKey) {
     };
 
 
+    // Driving Directions
+    mappify.drivingDirections = function(origin, destination, options, done) {
+
+        let originValidationResults = validatePointObject(origin);
+        if(originValidationResults.error) {
+            return done(new Error(`Origin isn't a valid point. ${originValidationResults.error.message}.`));
+        }
+
+        let destinationValidationResults = validatePointObject(destination);
+        if(destinationValidationResults.error) {
+            return done(new Error(`Destination isn't a valid point. ${destinationValidationResults.error.message}.`));
+        }
+
+        done(new Error("Not Implemented"));
+
+    };
+
+    // Driving Statistics
+    mappify.drivingStatistics = function(origin, destination, options, done) {
+
+        let originValidationResults = validatePointObject(origin);
+        if(originValidationResults.error) {
+            return done(new Error(`Origin isn't a valid point. ${originValidationResults.error.message}.`));
+        }
+
+        let destinationValidationResults = validatePointObject(destination);
+        if(destinationValidationResults.error) {
+            return done(new Error(`Destination isn't a valid point. ${destinationValidationResults.error.message}.`));
+        }
+
+        done(new Error("Not Implemented"));
+
+    };
+
+
     return mappify;
+
+
+    // Helper functions
+    function validatePointObject(point) {
+
+        let validationResults = {};
+
+        if(point === null || typeof point !== "object") {
+            validationResults.error = new Error("Not a valid object");
+        }
+        else if((typeof point.lat) !== "number") {
+            validationResults.error = new Error("'lat' is missing");
+        }
+        else if((typeof point.lon) !== "number") {
+            validationResults.error = new Error("'lon' is missing");
+        }
+        else if(point.lat < -90 || point.lat > 90) {
+            validationResults.error = new Error("Latitude is out of range");
+        }
+        else if(point.lon < -180 || point.lon > 180) {
+            validationResults.error = new Error("Longitude is out of range");
+        }
+        else {
+            validationResults.validPoint = {
+                lat: point.lat,
+                lon: point.lon
+            }
+        }
+
+        return validationResults;
+    }
 };
