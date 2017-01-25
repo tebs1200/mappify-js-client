@@ -106,9 +106,12 @@ module.exports.getClient = function(apiKey) {
     mappify.geocode = function(streetAddress, postCode, suburb, state, done) {
 
         if(typeof streetAddress !== "string") {
-            return done(new TypeError("Parameter 'streetAddress' wasn't a string value"));
+            return done(new TypeError("Provided street address value wasn't a string"));
         }
-        if(postcode && (typeof postCode !== "string")) {
+        if(streetAddress === "") {
+            return done(new TypeError("Provided street address string was empty"));
+        }
+        if(postCode && (typeof postCode !== "string")) {
             return done(new TypeError("Parameter 'postCode' wasn't a string value"));
         }
         if(suburb && (typeof suburb !== "string")) {
