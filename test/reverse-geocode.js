@@ -12,7 +12,7 @@ describe("reverseGeocode", () => {
     it("should return with error if the first argument isn't a number", (done) => {
         mappify.reverseGeocode("abc", 153.027, null, (err) => {
             expect(err).to.exist;
-            expect(err.message).to.equal("Latidude wasn't a number");
+            expect(err.message).to.equal("Latitude wasn't a number");
             done();
         });
     });
@@ -57,7 +57,7 @@ describe("reverseGeocode", () => {
         });
     });
 
-    it.skip("should return a response object for a valid encoding and coordinates", (done) => {
+    it("should return a response object for a valid encoding and coordinates", (done) => {
         mappify.reverseGeocode(-27.471, 153.027, null, (err, res) => {
             expect(err).not.to.exist;
             expect(res).to.exist;

@@ -147,7 +147,44 @@ module.exports.getClient = function(apiKey) {
 
     // Reverse Geocode
     mappify.reverseGeocode = function(lat, long, radius, done) {
-        done(new Error("Not Implemented"));
+        if(typeof lat !== "number") {
+            return done(new Error("Latitude wasn't a number"));
+        }
+        if(lat < -90 || lat > 90) {
+            return done(new Error("Latitude is out of range"));
+        }
+
+        if(typeof long !== "number") {
+            return done(new Error("Longitude wasn't a number"));
+        }
+        if(long < -180 || long > 180) {
+            return done(new Error("Longitude is out of range"));
+        }
+
+        if(radius !== null && (typeof radius !== "number")) {
+            return done(new Error("Radius wasn't a number"));
+        }
+        if((typeof radius === "number") && radius < 0) {
+            return done(new Error("Radius is out of range"));
+        }
+
+        let postBody = {
+            lat: lat,
+            lon: long,
+            radius: radius,
+            apiKey: config.apiKey
+        };
+
+        request
+            .post(REVERSE_GEOCODE_URL)
+            .send(postBody)
+            .end((err, res) => {
+                if(err) {
+                    return done(err);
+                }
+
+                done(null, res.body);
+            });
     };
 
 
