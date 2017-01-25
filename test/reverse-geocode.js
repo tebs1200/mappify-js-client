@@ -12,7 +12,7 @@ describe("reverseGeocode", () => {
     it("should return with error if the first argument isn't a number", (done) => {
         mappify.reverseGeocode("abc", 153.027, null, (err) => {
             expect(err).to.exist;
-            expect(err.message).to.equal("Invalid latitude value");
+            expect(err.message).to.equal("Latidude wasn't a number");
             done();
         });
     });
@@ -28,7 +28,7 @@ describe("reverseGeocode", () => {
     it("should return with error if the second argument isn't a number", (done) => {
         mappify.reverseGeocode(-27.471, "xyz", null, (err) => {
             expect(err).to.exist;
-            expect(err.message).to.equal("Invalid longitude value");
+            expect(err.message).to.equal("Longitude wasn't a number");
             done();
         });
     });
@@ -44,7 +44,7 @@ describe("reverseGeocode", () => {
     it("should return with error if the third argument is provided but isn't a number", (done) => {
         mappify.reverseGeocode(-27.471, 153.027, "cheese", (err) => {
             expect(err).to.exist;
-            expect(err.message).to.equal("Invalid radius value");
+            expect(err.message).to.equal("Radius wasn't a number");
             done();
         });
     });
