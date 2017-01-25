@@ -112,16 +112,16 @@ module.exports.getClient = function(apiKey) {
             return done(new TypeError("Provided street address string was empty"));
         }
         if(postCode && (typeof postCode !== "string")) {
-            return done(new TypeError("Parameter 'postCode' wasn't a string value"));
+            return done(new TypeError("Provided postcode wasn't a string"));
         }
         if(suburb && (typeof suburb !== "string")) {
-            return done(new TypeError("Parameter 'suburb' wasn't a string value"));
+            return done(new TypeError("Provided suburb wasn't a string"));
         }
         if(state && (typeof state !== "string")) {
-            return done(new TypeError("Parameter 'state' wasn't a string value"));
+            return done(new TypeError("Provided state wasn't a string"));
         }
         if(state && !["ACT", "NSW", "VIC", "QLD", "TAS", "SA", "WA", "NT"].includes(state)) {
-            return done(new Error("Invalid state value"));
+            return done(new Error("Provided state wasn't a valid state code"));
         }
 
         let postBody = {
