@@ -9,6 +9,8 @@ const AUTOCOMPLETE_URL = MAPPIFY_BASE_URL + "address/autocomplete/";
 const CLASSIFY_URL = MAPPIFY_BASE_URL + "coordinates/classify/";
 const GEOCODE_URL = MAPPIFY_BASE_URL + "address/geocode/";
 const REVERSE_GEOCODE_URL = MAPPIFY_BASE_URL + "coordinates/reversegeocode/";
+const DRIVING_DIRECTIONS_URL = MAPPIFY_BASE_URL + "trip/directions/";
+const DRIVING_STATISTICS_URL = MAPPIFY_BASE_URL + "trip/driveStats/";
 
 
 module.exports.getClient = function(apiKey) {
@@ -201,8 +203,32 @@ module.exports.getClient = function(apiKey) {
             return done(new Error(`Destination isn't a valid point. ${destinationValidationResults.error.message}.`));
         }
 
-        done(new Error("Not Implemented"));
+        if(typeof options !== "object") {
+            return done(new Error("Options isn't an object"));
+        }
 
+        let postBody = {
+            origin: originValidationResults.validPoint,
+            destination: destinationValidationResults.validPoint,
+            apiKey: config.apiKey
+        };
+        if(options && options.prioritiseMinimumDistance) {
+            postBody.options.prioritiseMinimumDistance = true;
+        }
+        if(options && options.ingnoreDirectionality) {
+            postBody.options.ingnoreDirectionality = true;
+        }
+
+        request
+            .post(DRIVING_DIRECTIONS_URL)
+            .send(postBody)
+            .end((err, res) => {
+                if(err) {
+                    return done(err);
+                }
+
+                done(null, res.body);
+            });
     };
 
     // Driving Statistics
@@ -218,7 +244,32 @@ module.exports.getClient = function(apiKey) {
             return done(new Error(`Destination isn't a valid point. ${destinationValidationResults.error.message}.`));
         }
 
-        done(new Error("Not Implemented"));
+        if(typeof options !== "object") {
+            return done(new Error("Options isn't an object"));
+        }
+
+        let postBody = {
+            origin: originValidationResults.validPoint,
+            destination: destinationValidationResults.validPoint,
+            apiKey: config.apiKey
+        };
+        if(options && options.prioritiseMinimumDistance) {
+            postBody.options.prioritiseMinimumDistance = true;
+        }
+        if(options && options.ingnoreDirectionality) {
+            postBody.options.ingnoreDirectionality = true;
+        }
+
+        request
+            .post(DRIVING_STATISTICS_URL)
+            .send(postBody)
+            .end((err, res) => {
+                if(err) {
+                    return done(err);
+                }
+
+                done(null, res.body);
+            });
 
     };
 

@@ -44,13 +44,13 @@ describe("drivingDirections", () => {
     it("should return with error if the third argument is present but not an object", (done) => {
         mappify.drivingDirections({lat: -12.4317, lon: 130.8449}, {lat: -12.4668, lon: 130.8426}, "string", (err) => {
             expect(err).to.exist;
-            expect(err.message).to.equal("Options isn't an obect");
+            expect(err.message).to.equal("Options isn't an object");
             done();
         });
     });
 
     it("should return a response object for a valid origin and destination", (done) => {
-        mappify.drivingDirections({lat: -12.4317, lon: 130.8449}, {lat: -12.4668, lon: 130.8426}, null, (err) => {
+        mappify.drivingDirections({lat: -12.4317, lon: 130.8449}, {lat: -12.4668, lon: 130.8426}, null, (err, res) => {
             expect(err).not.to.exist;
             expect(res).to.exist;
             expect(res.type).to.equal("driveDirections");
