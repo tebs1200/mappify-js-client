@@ -10,7 +10,7 @@ describe("reverseGeocode", () => {
     });
 
     it("should return with error if the first argument isn't a number", (done) => {
-        mappify.reverseGeocode("abc", 153.027, null, (err) => {
+        mappify.reverseGeocode("abc", 153.027, (err) => {
             expect(err).to.exist;
             expect(err.message).to.equal("Latitude wasn't a number");
             done();
@@ -18,7 +18,7 @@ describe("reverseGeocode", () => {
     });
 
     it("should return with error if the latitude value is out of range", (done) => {
-        mappify.reverseGeocode(200, 153.027, null, (err) => {
+        mappify.reverseGeocode(200, 153.027, (err) => {
             expect(err).to.exist;
             expect(err.message).to.equal("Latitude is out of range");
             done();
@@ -26,7 +26,7 @@ describe("reverseGeocode", () => {
     });
 
     it("should return with error if the second argument isn't a number", (done) => {
-        mappify.reverseGeocode(-27.471, "xyz", null, (err) => {
+        mappify.reverseGeocode(-27.471, "xyz", (err) => {
             expect(err).to.exist;
             expect(err.message).to.equal("Longitude wasn't a number");
             done();
@@ -34,7 +34,7 @@ describe("reverseGeocode", () => {
     });
 
     it("should return with error if the longitude value is out of range", (done) => {
-        mappify.reverseGeocode(-27.471, 300, null, (err) => {
+        mappify.reverseGeocode(-27.471, 300, (err) => {
             expect(err).to.exist;
             expect(err.message).to.equal("Longitude is out of range");
             done();
@@ -58,7 +58,16 @@ describe("reverseGeocode", () => {
     });
 
     it("should return a response object for a valid encoding and coordinates", (done) => {
-        mappify.reverseGeocode(-27.471, 153.027, null, (err, res) => {
+        mappify.reverseGeocode(-27.471, 153.027, (err, res) => {
+            expect(err).not.to.exist;
+            expect(res).to.exist;
+            expect(res.type).to.equal("streetAddressRecord");
+            done();
+        });
+    });
+
+    it("should return a response object if a valid radius is provided", (done) => {
+        mappify.reverseGeocode(-27.471, 153.027, 500, (err, res) => {
             expect(err).not.to.exist;
             expect(res).to.exist;
             expect(res.type).to.equal("streetAddressRecord");

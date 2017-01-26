@@ -64,6 +64,12 @@ module.exports.getClient = function(apiKey) {
 
     mappify.classifyCoordinates = function(encoding, lat, long, radius, done) {
 
+        // radius is optional
+        if(arguments.length == 4 && (typeof arguments[3]) === "function") {
+            radius = null;
+            done = arguments[3];
+        }
+
         if(!encoding || !["LGA", "POA", "SA1", "SA2", "SA3", "SA4"].includes(encoding)) {
             return done(new Error("Invalid encoding value"));
         }
@@ -153,6 +159,13 @@ module.exports.getClient = function(apiKey) {
 
 
     mappify.reverseGeocode = function(lat, long, radius, done) {
+
+        // radius is optional
+        if(arguments.length == 3 && (typeof arguments[2]) === "function") {
+            radius = null;
+            done = arguments[2];
+        }
+
         if(typeof lat !== "number") {
             return done(new Error("Latitude wasn't a number"));
         }
