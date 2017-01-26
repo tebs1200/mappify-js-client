@@ -192,89 +192,19 @@ module.exports.getClient = function(apiKey) {
 
     // Driving Directions
     mappify.drivingDirections = function(origin, destination, options, done) {
-
-        let originValidationResults = validatePointObject(origin);
-        if(originValidationResults.error) {
-            return done(new Error(`Origin isn't a valid point. ${originValidationResults.error.message}.`));
-        }
-
-        let destinationValidationResults = validatePointObject(destination);
-        if(destinationValidationResults.error) {
-            return done(new Error(`Destination isn't a valid point. ${destinationValidationResults.error.message}.`));
-        }
-
-        if(typeof options !== "object") {
-            return done(new Error("Options isn't an object"));
-        }
-
-        let postBody = {
-            origin: originValidationResults.validPoint,
-            destination: destinationValidationResults.validPoint,
-            apiKey: config.apiKey
-        };
-        if(options && options.prioritiseMinimumDistance) {
-            postBody.options.prioritiseMinimumDistance = true;
-        }
-        if(options && options.ingnoreDirectionality) {
-            postBody.options.ingnoreDirectionality = true;
-        }
-
-        request
-            .post(DRIVING_DIRECTIONS_URL)
-            .send(postBody)
-            .end((err, res) => {
-                if(err) {
-                    return done(err);
-                }
-
-                done(null, res.body);
-            });
+        routingRequest(DRIVING_DIRECTIONS_URL, origin, destination, options, done);
     };
+
 
     // Driving Statistics
     mappify.drivingStatistics = function(origin, destination, options, done) {
-
-        let originValidationResults = validatePointObject(origin);
-        if(originValidationResults.error) {
-            return done(new Error(`Origin isn't a valid point. ${originValidationResults.error.message}.`));
-        }
-
-        let destinationValidationResults = validatePointObject(destination);
-        if(destinationValidationResults.error) {
-            return done(new Error(`Destination isn't a valid point. ${destinationValidationResults.error.message}.`));
-        }
-
-        if(typeof options !== "object") {
-            return done(new Error("Options isn't an object"));
-        }
-
-        let postBody = {
-            origin: originValidationResults.validPoint,
-            destination: destinationValidationResults.validPoint,
-            apiKey: config.apiKey
-        };
-        if(options && options.prioritiseMinimumDistance) {
-            postBody.options.prioritiseMinimumDistance = true;
-        }
-        if(options && options.ingnoreDirectionality) {
-            postBody.options.ingnoreDirectionality = true;
-        }
-
-        request
-            .post(DRIVING_STATISTICS_URL)
-            .send(postBody)
-            .end((err, res) => {
-                if(err) {
-                    return done(err);
-                }
-
-                done(null, res.body);
-            });
-
+        routingRequest(DRIVING_STATISTICS_URL, origin, destination, options, done);
     };
 
 
+
     return mappify;
+
 
 
     // Helper functions
@@ -306,4 +236,45 @@ module.exports.getClient = function(apiKey) {
 
         return validationResults;
     }
+
+    function routingRequest(url, origin, destination, options, done) {
+
+        let originValidationResults = validatePointObject(origin);
+        if(originValidationResults.error) {
+            return done(new Error(`Origin isn't a valid point. ${originValidationResults.error.message}.`));
+        }
+
+        let destinationValidationResults = validatePointObject(destination);
+        if(destinationValidationResults.error) {
+            return done(new Error(`Destination isn't a valid point. ${destinationValidationResults.error.message}.`));
+        }
+
+        if(typeof options !== "object") {
+            return done(new Error("Options isn't an object"));
+        }
+
+        let postBody = {
+            origin: originValidationResults.validPoint,
+            destination: destinationValidationResults.validPoint,
+            apiKey: config.apiKey
+        };
+        if(options && options.prioritiseMinimumDistance) {
+            postBody.options.prioritiseMinimumDistance = true;
+        }
+        if(options && options.ingnoreDirectionality) {
+            postBody.options.ingnoreDirectionality = true;
+        }
+
+        request
+            .post(url)
+            .send(postBody)
+            .end((err, res) => {
+                if(err) {
+                    return done(err);
+                }
+
+                done(null, res.body);
+            });
+
+    };
 };
