@@ -34,4 +34,13 @@ describe("autocomplete", () => {
         });
     });
 
+    it("should allow disabling of prefix boosting by passing an options object as the second argument", (done) => {
+        mappify.autocomplete("178 Wake", {boostPrefix: false}, (err, res) => {
+            expect(err).not.to.exist;
+            expect(res).to.exist;
+            expect(res.type).to.equal("completeAddressRecordArray");
+            done();
+        });
+    });
+
 });

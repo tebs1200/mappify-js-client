@@ -17,17 +17,21 @@ module.exports.getClient = function(apiKey) {
 
     let mappify = {};
 
-    // Initial Configuration
-    let config = {
-        autocompleteBoostPrefix: true
-    };
+    let config = {};
     if(apiKey && typeof apiKey === "string") {
         config.apiKey = apiKey;
     }
 
 
-    // Autocomplete
-    mappify.autocomplete = function(addressSearchString, done) {
+    /* *** Geocoding *** */
+
+    mappify.autocomplete = function(addressSearchString, options, done) {
+
+        // Options are optional
+        if(arguments.length == 2 && (typeof arguments[1]) === "function") {
+            options = null;
+            done = arguments[1];
+        }
 
         if(typeof addressSearchString !== "string") {
             return done(new TypeError("Provided search value wasn't a string"));
@@ -36,11 +40,14 @@ module.exports.getClient = function(apiKey) {
             return done(new TypeError("Provided search string was empty"));
         }
 
+
         let postBody = {
             streetAddress: addressSearchString,
-            boostPrefix: config.autocompleteBoostPrefix,
             apiKey: config.apiKey
         };
+        if(options && (typeof options.boostPrefix) === 'boolean') {
+            postBody.boostPrefix = options.boostPrefix;
+        }
 
         request
             .post(AUTOCOMPLETE_URL)
@@ -55,7 +62,6 @@ module.exports.getClient = function(apiKey) {
     };
 
 
-    // Classify Coordinates
     mappify.classifyCoordinates = function(encoding, lat, long, radius, done) {
 
         if(!encoding || !["LGA", "POA", "SA1", "SA2", "SA3", "SA4"].includes(encoding)) {
@@ -104,7 +110,6 @@ module.exports.getClient = function(apiKey) {
     };
 
 
-    // Geocode
     mappify.geocode = function(streetAddress, postCode, suburb, state, done) {
 
         if(typeof streetAddress !== "string") {
@@ -147,7 +152,6 @@ module.exports.getClient = function(apiKey) {
     };
 
 
-    // Reverse Geocode
     mappify.reverseGeocode = function(lat, long, radius, done) {
         if(typeof lat !== "number") {
             return done(new Error("Latitude wasn't a number"));
@@ -190,13 +194,13 @@ module.exports.getClient = function(apiKey) {
     };
 
 
-    // Driving Directions
+    /* *** Routing *** */
+
     mappify.drivingDirections = function(origin, destination, options, done) {
         routingRequest(DRIVING_DIRECTIONS_URL, origin, destination, options, done);
     };
 
 
-    // Driving Statistics
     mappify.drivingStatistics = function(origin, destination, options, done) {
         routingRequest(DRIVING_STATISTICS_URL, origin, destination, options, done);
     };
@@ -207,7 +211,8 @@ module.exports.getClient = function(apiKey) {
 
 
 
-    // Helper functions
+    /* *** Helper functions *** */
+
     function validatePointObject(point) {
 
         let validationResults = {};
