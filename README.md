@@ -11,9 +11,9 @@ Node.js:
 
 ## Usage
 
-    const mappify = require("../index.js").getClient("<YOUR_API_KEY>");
+    const mappify = require("mappify").getClient("<YOUR_API_KEY>");
 
-The API key is optional but you'll be limited to 100 requests per day as per Mappify.io pricing
+The API key is optional but you'll be limited to 100 requests per day without it as per Mappify.io pricing
 
 ### Geocoding - Autocomplete
 
