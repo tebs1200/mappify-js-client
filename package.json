@@ -14,7 +14,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tebs1200/node-mappify.git"
+    "url": "https://github.com/tebs1200/mappify-js-client.git"
   },
   "dependencies": {
     "superagent": "^3.3.2"
