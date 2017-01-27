@@ -257,6 +257,12 @@ module.exports.getClient = function(apiKey) {
 
     function routingRequest(url, origin, destination, options, done) {
 
+        // Options are optional
+        if((typeof arguments[4]) === "undefined" && (typeof arguments[3]) === "function") {
+            options = null;
+            done = arguments[3];
+        }
+
         let originValidationResults = validatePointObject(origin);
         if(originValidationResults.error) {
             return done(new Error(`Origin isn't a valid point. ${originValidationResults.error.message}.`));
@@ -276,11 +282,17 @@ module.exports.getClient = function(apiKey) {
             destination: destinationValidationResults.validPoint,
             apiKey: config.apiKey
         };
-        if(options && options.prioritiseMinimumDistance) {
-            postBody.options.prioritiseMinimumDistance = true;
-        }
-        if(options && options.ingnoreDirectionality) {
-            postBody.options.ingnoreDirectionality = true;
+        if(options) {
+            let validOptions = {};
+
+            if(options.prioritiseMinimumDistance) {
+                validOptions.prioritiseMinimumDistance = true;
+            }
+            if(options.ignoreDirectionality) {
+                validOptions.ignoreDirectionality = true;
+            }
+
+            postBody.options = validOptions || null;
         }
 
         request
