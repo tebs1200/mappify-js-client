@@ -42,3 +42,11 @@ You can pass in a radius as the 4th argument:
     mappify.classifyCoordinates("LGA", -27.471, 153.027, 500, (err, res) => {
 
     });
+
+### Geocoding - Geocode
+
+    mappify.geocode("16 St Georges Terrace", "6000", "Perth", "WA", (err, res) => {
+        // your code here
+    });
+
+Only the first argument (street address) is required, but pass in `null` or an empty string for arguments you don't use. Response structure described in the [Mappify.io API docs](https://mappify.io/docs/#api-Geocoding-PostApiRpcAddressGeocode)
