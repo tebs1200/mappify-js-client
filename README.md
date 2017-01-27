@@ -46,7 +46,21 @@ You can pass in a radius as the 4th argument:
 ### Geocoding - Geocode
 
     mappify.geocode("16 St Georges Terrace", "6000", "Perth", "WA", (err, res) => {
-        // your code here
+        // Your code here
     });
 
 Only the first argument (street address) is required, but pass in `null` or an empty string for arguments you don't use. Response structure described in the [Mappify.io API docs](https://mappify.io/docs/#api-Geocoding-PostApiRpcAddressGeocode)
+
+### Geocoding - Reverse Geocode
+
+    mappify.reverseGeocode(-27.471, 153.027, (err, res) => {
+        // Your code here
+    });
+
+The response body is described in the [Mappify.io API docs](https://mappify.io/docs/#api-Geocoding-PostApiRpcCoordinatesReversegeocode)
+
+You can pass in a radius as the 3rd argument:
+
+    mappify.reverseGeocode(-27.471, 153.027, 500, (err, res) => {
+
+    });
