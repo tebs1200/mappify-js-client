@@ -1,6 +1,6 @@
 {
   "name": "mappify",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Node.js client library for Mappify.io",
   "main": "index.js",
   "scripts": {
@@ -17,10 +17,10 @@
     "url": "https://github.com/tebs1200/mappify-js-client.git"
   },
   "dependencies": {
-    "superagent": "^3.3.2"
+    "superagent": "^5.1.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0"
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2"
   }
 }
